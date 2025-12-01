@@ -194,24 +194,6 @@ const getBSV = async () => {
 	});
 };
 
-const getBTM = async () => {
-	return new Promise(resolve => {
-		axios.get('http://blockmeta.com/api/v3/blocks?page=1&limit=1',{ httpsAgent: axiosAgent }).then((response) => {
-      const name = 'Bytom';
-			const blockHeight = parseInt(response.data.blocks[0].height);
-			if(!blockHeight) console.log('blockHeight error: Bytom');
-      const blockTime = 2.5 * 60 * 1000;
-      let halvingBlock = 840000
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      const halvingTime = (halvingBlock - blockHeight) * blockTime;
-			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
-		}).catch((error) => {
-      console.log('Axios Error', error);
-      resolve(false);
-    });
-	});
-};
-
 const getRVN = async () => {
 	return new Promise(resolve => {
 		axios.get('https://api.ravencoin.org/api/blocks?limit=1',{ httpsAgent: axiosAgent }).then((response) => {
@@ -312,7 +294,6 @@ const start = async () => {
 	await setHalvingToken('bch', getBCH);
 	await setHalvingToken('zec', getZEC);
 	await setHalvingToken('btg', getBTG);
-	await setHalvingToken('btm', getBTM);
 	await setHalvingToken('mona', getMONA);
 	await setHalvingToken('xzc', getXZC);
 	await setHalvingToken('vtc', getVTC);
