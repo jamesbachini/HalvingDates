@@ -79,7 +79,7 @@
       const cryptoTimer = setTimer('crypto',inf[sym].halvingTime);
       let additionalText;
       if (sym === 'btc') {
-        additionalText = `<p>The April 2024 Bitcoin halving event cuts the supply of newly minted Bitcoin distributed to miners from 6.25 to 3.125 BTC per block (every 10 minutes).</p><p>The 2020 Bitcoin halving event took place at 19:23 UTC on the 11th May 2020. Bitcoin at the halving was priced on exchange at $8683</p>
+        additionalText = `<p>The 2028 Bitcoin halving event cuts the supply of newly minted Bitcoin distributed to miners from 6.25 to 3.125 BTC per block (every 10 minutes).</p><p>The 2020 Bitcoin halving event took place at 19:23 UTC on the 11th May 2020. Bitcoin at the halving was priced on exchange at $8683</p>
         <p>The Bitcoin network is powered by miners who are rewarded with Bitcoin which they then sell on exchange to pay for their costs. Bitcoin mining is a big business with $10 million USD worth of Bitcoin mined and distributed each day at the start of 2020.</p>
         <p>Bitcoin has a fixed supply with a total limit of 21,000,000 Bitcoins which can ever be created. To achieve this limit the mining rewards are reduced in half once every four years. This event is known as halving or halvening and is set to happen once every 210,000 blocks.</p>
         <p>Each block in the Bitcoin blockchain stores transactional data and takes around 10 minutes to mine. We can therefore predict the date for the Bitcoin halvening by looking at the current block height or block number and calculating how long the remaining blocks will take to mine.</p>
@@ -87,11 +87,12 @@
         <table class="tbl tbl-bitcoin">
           <tr><th>Event</th><th>Date</th><th>Block No.</th><th>Mining Reward</th></tr>
           <tr><td>Bitcoin Launch</td><td>3rd January 2009</td><td>0</td><td>50</td></tr>
-          <tr><td>1st Halving</td><td>28th Nov 2012</td><td>210,00</td><td>25</td></tr>
-          <tr><td>2nd Halving</td><td>9th July 2016</td><td>420,00</td><td>12.5</td></tr>
-          <tr><td>3rd Halving</td><td>11th May 2020</td><td>630,00</td><td>6.25</td></tr>
-          <tr><td>4th Halving</td><td>April 2024*</td><td>840,00</td><td>3.125</td></tr>
-          <tr><td>5th Halving</td><td>2028*</td><td>1050,00</td><td>1.5625</td></tr>
+          <tr><td>1st Halving</td><td>28th Nov 2012</td><td>210,000</td><td>25</td></tr>
+          <tr><td>2nd Halving</td><td>9th July 2016</td><td>420,000</td><td>12.5</td></tr>
+          <tr><td>3rd Halving</td><td>11th May 2020</td><td>630,000</td><td>6.25</td></tr>
+          <tr><td>4th Halving</td><td>19th April 2024</td><td>840,000</td><td>3.125</td></tr>
+          <tr><td>5th Halving</td><td>2028*</td><td>1,050,000</td><td>1.5625</td></tr>
+          <tr><td>6th Halving</td><td>2032*</td><td>1,260,000</td><td>0.78125</td></tr>
         </table>
         <img src="img/bitcoin-halving.png" class="responsive-image" alt="bitcoin halving" />
         <p>Bitcoin, the flagship cryptocurrency, uses a process known as "halving" to reduce the supply of new coins entering circulation. This protocol directly influences several aspects of the digital currency, notably its inherent worth and incentives for mining. As a result of this unique feature of bitcoin and its finite supply, digital scarcity is inherently established.</p>
@@ -117,19 +118,7 @@
         <br><br>
         Zcash is a privacy coin which means transactions on the blockchain are designed to protect the identity of the sending and receiving parties. The private shielding uses zero-knowledge proofs to allow verification of transactions without revealing details. Where as transactions on the Bitcoin network are completely transparent Zcash is designed to protect the identies of it's users. It was originally developed in 2016 and uses a proof of work algorithm. Currently each block includes a 12.5 ZEC reward of which the algorithm subtracts 20% to go to the founders, developers and early investors.<br><br>
         After the halving event in 2020 Zcash's reward will be reduced to 6.25 ZEC. This event will also signify the end of the founders reward which will expire at the same time.`;
-      } else if (sym === 'bcd') {
-        additionalText = `Bitcoin Diamond is a hard fork of Bitcoin. The fork took place in 2017 at block 495866.<br><br>
-        Bitcoin Diamond focuses on being a usable cryptocurrency and a transferable method of value rather than a store of value. There are a list of online e-commerce merchants that currently accept BCD on their website. During the fork the supply was multiplied 10x. So anyone holding keys for 1 BTC would own 10 BCD. The block size limit was also increased from 1mb to 8mb to facilitate more transactions. Bitcoin Diamond uses a custom version of the X13 mining algorithm which is aimed at being a GPU hashing algorithm. Bitcoin Diamond trades on a number of top exchanges including <a href="https://www.binance.com/en/register?ref=QKMBZ7IE" target="_blank" rel="nofollow">Binance</a>.
-        <h4>Future Bitcoin Diamond Halving Dates</h4>
-        <table class="tbl tbl-bitcoin">
-        <tr><th>Event</th><th>Date</th><th>Block No.</th><th>Mining Reward</th></tr>
-          <tr><td>3rd Halving</td><td>2020</td><td>630,00</td><td>62.5 BCD</td></tr>
-          <tr><td>4th Halving</td><td>2024</td><td>840,00</td><td>31.25 BCD</td></tr>
-          <tr><td>5th Halving</td><td>2028</td><td>1050,00</td><td>15.625 BCD</td></tr>
-        </table>
-        <h4>BCD Halving 2020</h4>
-        Bitcoin diamonds chain has dropped behind the main Bitcoin chain meaning the halving event is currently expected to take place in August 2020. Source code for the project is at: <a href="https://github.com/eveybcd/BitcoinDiamond">Github BCD Repository</a>. Bitcoin's halving took place on May 11th while BCD is expected in early August.`;
-        } else if (sym === 'btg') {
+      } else if (sym === 'btg') {
         additionalText = `The 2020 Bitcoin Gold Halving occured on Apr 18, 2020 1:44:22 PM.<br>Since the 2020 halving BTG mining reward is now 6.25 BTG per block. The next Bitcoin Gold Halving is estimated for 2024.<br><br>Bitcoin Gold forked from the main Bitcoin chain on October 24th 2017. The idea behind the fork was to do with discontent with the mining sector and ASIC devices leading to more centralisation. By using an algorithm which blocked ASIC devices they could open up mining to individuals using GPU devices.<br><br>Controversially the developers of Bitcoin Gold included 100,000 coins to be set aside as an endowment in a post-mine. This caused 8000 blocks to be mined in rapid succession and affected the halving dates going forwards.<br><br>The halving date for Bitcoin Gold will vary from Bitcoin because the chains are mined independently and although the schedule is the same each block time is different.<br><br>Bitcoin Gold is available on <a href="https://www.binance.com/en/register?ref=QKMBZ7IE" target="_blank" rel="nofollow">Binance</a>.`;
         } else if (sym === 'xzc') {
         additionalText = `<h4>Note that Zcoin has now rebranded to Firo</h4>`;

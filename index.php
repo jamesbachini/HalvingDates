@@ -8,7 +8,7 @@
       <h1>Cryptocurrency Halving Dates</h1>
       <hr>
       <p>Many cryptocurrencies, including Bitcoin, have a fixed supply and achieve this by halving the mining rewards at regular intervals. This reduces the distribution of coins affecting supply and demand for the cryptocurrency.</p>
-      <p>The previous halving for Bitcoin happened on 11th of May, 2020 at block height 630,000. It will happen again in 2024, then 2028 etc. However it's not just Bitcoin that has a halvening event. Check out the cryptocurrencies below and their halving dates.</p>
+      <p>The previous halving for Bitcoin happened on April 19th 2024 and it will happen again in 2028 etc. However it's not just Bitcoin that has a halvening event. Check out the cryptocurrencies below and their halving dates.</p>
       <div id="halving-table">
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       </div>
