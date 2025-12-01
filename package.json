@@ -1,0 +1,14 @@
+{
+  "name": "halvingdates",
+  "version": "1.0.0",
+  "description": "Data fetcher for cryptocurrency halving dates",
+  "main": "halving.js",
+  "scripts": {
+    "update-halving": "node halving.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3"
+  }
+}
