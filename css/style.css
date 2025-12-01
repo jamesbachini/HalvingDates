@@ -186,7 +186,6 @@ table tr:nth-child(even) {
 } 
 
 #halving-table {
-	min-height: 900px;
 	min-width: 100%;
 }
 #sub-halving-table {
