@@ -1,0 +1,16 @@
+https://halvingdates.com/
+https://halvingdates.com/crypto.php?sym=btc&name=Bitcoin
+https://halvingdates.com/crypto.php?sym=ltc&name=Litecoin
+https://halvingdates.com/crypto.php?sym=bch&name=Bitcoin%20Cash
+https://halvingdates.com/crypto.php?sym=bsv&name=Bitcoin%20SV
+https://halvingdates.com/crypto.php?sym=zec&name=Zcash
+https://halvingdates.com/crypto.php?sym=btg&name=Bitcoin%20Gold
+https://halvingdates.com/crypto.php?sym=rvn&name=Ravencoin
+https://halvingdates.com/crypto.php?sym=bcd&name=Bitcoin%20Diamond
+https://halvingdates.com/crypto.php?sym=btm&name=Bytom
+https://halvingdates.com/crypto.php?sym=mona&name=Monacoin
+https://halvingdates.com/crypto.php?sym=xvg&name=Verge
+https://halvingdates.com/crypto.php?sym=xzc&name=Zcoin
+https://halvingdates.com/crypto.php?sym=vtc&name=Vertcoin
+https://halvingdates.com/crypto.php?sym=bst&name=Blockstamp
+https://halvingdates.com/crypto.php?sym=emc2&name=Einsteinium
