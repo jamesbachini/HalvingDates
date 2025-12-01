@@ -117,7 +117,6 @@ const getLatestBlock = async (token) => {
 		if (token === 'mona') url = 'https://uk.advfn.com/crypto/Monacoin-MONA/fundamentals';
 		if (token === 'xzc') url = 'https://uk.advfn.com/crypto/ZCoin-XZC/fundamentals';
 		if (token === 'vtc') url = 'https://uk.advfn.com/crypto/Vertcoin-VTC/fundamentals';
-		if (token === 'emc2') url = 'https://uk.advfn.com/crypto/Einsteinium-EMC2/fundamentals';
 		if (url) {
 			axios.get(url,{ httpsAgent: axiosAgent }).then((response) => {
 				const $ = cheerio.load(response.data);
@@ -164,11 +163,6 @@ const getCrypto = async (token) => {
 		name = 'Vertcoin';
 		blockTime = 150 * 1000;
 		halvingBlock = 1680000;
-	}
-	if (token === 'emc2') {
-		name = 'Einsteinium';
-		blockTime = 60 * 1000;
-		halvingBlock = 5256000;
 	}
 	const blockHeight = await getLatestBlock(token);
 	if (!blockHeight) return false;
@@ -297,7 +291,6 @@ const start = async () => {
 	await setHalvingToken('mona', getMONA);
 	await setHalvingToken('xzc', getXZC);
 	await setHalvingToken('vtc', getVTC);
-	await setHalvingToken('emc2', () => getCrypto('emc2'));
 
 	Object.keys(halving).forEach((token) => {
 		const data = halving[token];
