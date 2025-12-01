@@ -188,25 +188,6 @@ const getBSV = async () => {
 	});
 };
 
-const getBCD = async () => {
-	return new Promise(resolve => {
-		axios.get('http://api.bitcoindiamond.org/v2/info',{ httpsAgent: axiosAgent }).then((response) => {
-      const name = 'Bitcoin Diamond';
-			const blockHeight = parseInt(response.data.data.height);
-			if(!blockHeight) console.log('blockHeight error: Bitcoin Diamond');
-      const blockTime = 10 * 60 * 1000;
-      let halvingBlock = 630000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      const halvingTime = (halvingBlock - blockHeight) * blockTime;
-			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
-		}).catch((error) => {
-      console.log('Axios Error', error);
-      resolve(false);
-    });
-	});
-};
-
-
 const getBTM = async () => {
 	return new Promise(resolve => {
 		axios.get('http://blockmeta.com/api/v3/blocks?page=1&limit=1',{ httpsAgent: axiosAgent }).then((response) => {
@@ -216,32 +197,6 @@ const getBTM = async () => {
       const blockTime = 2.5 * 60 * 1000;
       let halvingBlock = 840000
       if (blockHeight > halvingBlock) halvingBlock += 210000;
-      const halvingTime = (halvingBlock - blockHeight) * blockTime;
-			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
-		}).catch((error) => {
-      console.log('Axios Error', error);
-      resolve(false);
-    });
-	});
-};
-
-const getXVG = async () => {
-	return new Promise(resolve => {
-		axios.get('https://verge-blockchain.info/api/latest/blocks',{ httpsAgent: axiosAgent }).then((response) => {
-      const name = 'Verge';
-			const blockHeight = parseInt(response.data.data[0].height);
-			if(!blockHeight) console.log('blockHeight error: Verge');
-      const blockTime = 30 * 1000;
-      let halvingBlock = 6200000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
-      if (blockHeight > halvingBlock) halvingBlock += 500000;
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
