@@ -10,6 +10,7 @@
       <img src="img/close.svg" id="menu-close" alt="Menu Close" onclick="toggleMenu();" />
       <ul>
         <li><a href="crypto.php?sym=btc&name=Bitcoin">Bitcoin Halving Dates</a></li>
+        <li><a href="https://github.com/jamesbachini/HalvingDates">Open Source</a></li>
       </ul>
     </nav>
     <div class="clear"></div>

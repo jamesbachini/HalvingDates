@@ -5,22 +5,55 @@ const halving = require('./data/halving.json');
 const date = new Date();
 const https = require('https');
 
+const halvingSchedule = {
+	btc: { firstHalvingBlock: 210000, interval: 210000 },
+	ltc: { firstHalvingBlock: 840000, interval: 840000 },
+	bch: { firstHalvingBlock: 210000, interval: 210000 },
+	zec: { firstHalvingBlock: 1046400, interval: 1046400, blockTime: 75 * 1000 },
+	btg: { firstHalvingBlock: 210000, interval: 210000 },
+	bcd: { firstHalvingBlock: 210000, interval: 210000 },
+	btm: { firstHalvingBlock: 840000, interval: 210000 },
+	bsv: { firstHalvingBlock: 210000, interval: 210000 },
+	mona: { firstHalvingBlock: 1051200, interval: 1051200 },
+	xvg: { firstHalvingBlock: 700000, interval: 700000 },
+	xzc: { firstHalvingBlock: 305000, interval: 305000 },
+	vtc: { firstHalvingBlock: 840000, interval: 840000 },
+	emc2: { firstHalvingBlock: 5256000, interval: 5256000 },
+	rvn: { firstHalvingBlock: 2100000, interval: 2100000 },
+};
+
 console.log('Halving v1.0.4');
 
 const axiosAgent = new https.Agent({  
  rejectUnauthorized: false
 });
 
+const getNextHalvingBlock = (token, blockHeight) => {
+	const schedule = halvingSchedule[token];
+	if (!schedule || !blockHeight) return false;
+	let halvingBlock = schedule.firstHalvingBlock;
+	while (blockHeight >= halvingBlock) halvingBlock += schedule.interval;
+	return halvingBlock;
+};
+
+const applySchedule = (token, data) => {
+	if (!data || typeof data.blockHeight !== 'number') return data;
+	const schedule = halvingSchedule[token];
+	if (!schedule) return data;
+	const blockTime = schedule.blockTime || data.blockTime;
+	const halvingBlock = getNextHalvingBlock(token, data.blockHeight);
+	const halvingTime = halvingBlock === false ? data.halvingTime : (halvingBlock - data.blockHeight) * blockTime;
+	return { ...data, blockTime, halvingBlock, halvingTime };
+};
+
 const getBTC = async () => {
 	return new Promise(resolve => {
 		axios.get('https://api.blockcypher.com/v1/btc/main',{ httpsAgent: axiosAgent }).then((response) => {
 			const name = 'Bitcoin';
-      const blockTime = 10 * 60 * 1000;
-      const blockHeight = parseInt(response.data.height);
-      if(!blockHeight) console.log('blockHeight error: Bitcoin');
-      let halvingBlock = 840000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
+			const blockTime = 10 * 60 * 1000;
+			const blockHeight = parseInt(response.data.height);
+			if(!blockHeight) console.log('blockHeight error: Bitcoin');
+      const halvingBlock = getNextHalvingBlock('btc', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -37,9 +70,7 @@ const getLTC = async () => {
 			const blockTime = 2.5 * 60 * 1000;
       const blockHeight = parseInt(response.data.height);
       if(!blockHeight) console.log('blockHeight error: Litecoin');
-      let halvingBlock = 2500000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
+      const halvingBlock = getNextHalvingBlock('ltc', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -56,8 +87,7 @@ const getBTG = async () => {
 			const blockTime = 10 * 60 * 1000;
       const blockHeight = parseInt(response.data.blockbook.bestHeight);
       if(!blockHeight) console.log('blockHeight error: Bitcoin Gold');
-      let halvingBlock = 840000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
+      const halvingBlock = getNextHalvingBlock('btg', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -74,10 +104,7 @@ const getBCH = async () => {
 			const blockTime = 10 * 60 * 1000;
       const blockHeight = parseInt(response.data.data[0].id);
       if(!blockHeight) console.log('blockHeight error: Bitcoin Cash');
-      let halvingBlock = 840000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
+      const halvingBlock = getNextHalvingBlock('bch', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -90,14 +117,11 @@ const getBCH = async () => {
 const getZEC = async () => {
 	return new Promise(resolve => {
 		axios.get('https://api.blockchair.com/zcash/blocks?s=id%28desc%29&limit=1&offset=0&page=0',{ httpsAgent: axiosAgent }).then((response) => {
-      const name = 'Bitcoin Cash';
-			const blockTime = 10 * 60 * 1000;
+      const name = 'Zcash';
+			const blockTime = 75 * 1000;
       const blockHeight = parseInt(response.data.data[0].id);
-      if(!blockHeight) console.log('blockHeight error: Bitcoin Cash');
-      let halvingBlock = 840000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
+      if(!blockHeight) console.log('blockHeight error: Zcash');
+      const halvingBlock = getNextHalvingBlock('zec', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -134,7 +158,6 @@ const getLatestBlock = async (token) => {
 
 const getCrypto = async (token) => {
 	let blockTime = 10 * 60 * 1000;
-	let halvingBlock = 630000
 	let name = 'Unknown';
 	if (token === 'bch') name = 'Bitcoin Cash';
 	if (token === 'bsv') name = 'Bitcoin SV';
@@ -142,30 +165,26 @@ const getCrypto = async (token) => {
 	if (token === 'zec') {
 		name = 'Zcash';
 		blockTime = 75 * 1000;
-		halvingBlock = 1046400;
 	}
 	if (token === 'rvn') {
 		name = 'Ravencoin';
 		blockTime = 60 * 1000;
-		halvingBlock = 2100000;
 	}
 	if (token === 'mona') {
 		name = 'Monacoin';
 		blockTime = 90 * 1000;
-		halvingBlock = 2102400;
 	}
 	if (token === 'xzc') {
 		name = 'Firo (Zcoin)';
 		blockTime = 600 * 1000;
-		halvingBlock = 305000;
 	}
 	if (token === 'vtc') {
 		name = 'Vertcoin';
 		blockTime = 150 * 1000;
-		halvingBlock = 1680000;
 	}
 	const blockHeight = await getLatestBlock(token);
 	if (!blockHeight) return false;
+	const halvingBlock = getNextHalvingBlock(token, blockHeight);
 	const halvingTime = (halvingBlock - blockHeight) * blockTime;
 	return { name, blockTime, blockHeight, halvingBlock, halvingTime };
 }
@@ -177,8 +196,7 @@ const getBSV = async () => {
 			const blockHeight = parseInt(response.data.backend.blocks);
 			if(!blockHeight) console.log('blockHeight error: Bitcoin SV');
       const blockTime = 10 * 60 * 1000;
-      let halvingBlock = 840000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
+      const halvingBlock = getNextHalvingBlock('bsv', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -195,9 +213,7 @@ const getRVN = async () => {
       if(!blockHeight) console.log('blockHeight error: Ravencoin');
       const name = 'Ravencoin';
       const blockTime = 60 * 1000;
-      let halvingBlock = 2100000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
-      if (blockHeight > halvingBlock) halvingBlock += 210000;
+      const halvingBlock = getNextHalvingBlock('rvn', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -214,11 +230,7 @@ const getVTC = async () => {
       if(!blockHeight) console.log('blockHeight error: Vertcoin');
       const name = 'Vertcoin';
 			const blockTime = 150 * 1000;
-      let halvingBlock = 1680000;
-      if (blockHeight > halvingBlock) halvingBlock += 840000;
-      if (blockHeight > halvingBlock) halvingBlock += 840000;
-      if (blockHeight > halvingBlock) halvingBlock += 840000;
-      if (blockHeight > halvingBlock) halvingBlock += 840000;
+      const halvingBlock = getNextHalvingBlock('vtc', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -236,7 +248,7 @@ const getMONA = async () => {
       if(!blockHeight) console.log('blockHeight error: Monacoin');
       const name = 'Monacoin';
 			const blockTime = 90 * 1000;
-      const halvingBlock = 3153400;
+      const halvingBlock = getNextHalvingBlock('mona', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -254,7 +266,7 @@ const getXZC = async () => {
       if(!blockHeight) console.log('blockHeight error: Zcoin');
       const name = 'Zcoin';
       const blockTime = 600 * 1000;
-      const halvingBlock = 305000;
+      const halvingBlock = getNextHalvingBlock('xzc', blockHeight);
       const halvingTime = (halvingBlock - blockHeight) * blockTime;
 			resolve({ name, blockTime, blockHeight, halvingBlock, halvingTime });
 		}).catch((error) => {
@@ -273,7 +285,7 @@ const start = async () => {
 		try {
 			const data = await fn();
 			if (data) {
-				halving[token] = data;
+				halving[token] = applySchedule(token, data);
 			} else {
 				console.log(`No data returned for ${token}, keeping previous values`);
 			}
@@ -291,6 +303,11 @@ const start = async () => {
 	await setHalvingToken('mona', getMONA);
 	await setHalvingToken('xzc', getXZC);
 	await setHalvingToken('vtc', getVTC);
+
+	Object.keys(halving).forEach((token) => {
+		if (!halving[token]) return;
+		halving[token] = applySchedule(token, halving[token]);
+	});
 
 	Object.keys(halving).forEach((token) => {
 		const data = halving[token];
