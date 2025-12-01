@@ -109,65 +109,71 @@ const getZEC = async () => {
 
 
 const getLatestBlock = async (token) => {
-  return new Promise(resolve => {
-    let url = false
-    //if (token === 'bch') url = 'https://uk.advfn.com/crypto/Bitcoin-Cash-ABC-BCH/fundamentals';
-    //if (token === 'btg') url = 'https://uk.advfn.com/crypto/Bitcoin-Gold-BTG/fundamentals';
-    if (token === 'rvn') url = 'https://uk.advfn.com/crypto/Ravencoin-RVN/fundamentals';
-    if (token === 'mona') url = 'https://uk.advfn.com/crypto/Monacoin-MONA/fundamentals';
-    if (token === 'xzc') url = 'https://uk.advfn.com/crypto/ZCoin-XZC/fundamentals';
-    if (token === 'vtc') url = 'https://uk.advfn.com/crypto/Vertcoin-VTC/fundamentals';
-    if (token === 'emc2') url = 'https://uk.advfn.com/crypto/Einsteinium-EMC2/fundamentals';
-    if (url) {
-      axios.get(url,{ httpsAgent: axiosAgent }).then((response) => {
-        const $ = cheerio.load(response.data);
-        const latestBlock = Number($('.page-fundamentals').html().split('Latest Block:')[1].split('</tr>')[0].split(/[^0-9]/).join(''));
-        resolve(latestBlock);
-      });
-    }
-  });
+	return new Promise(resolve => {
+		let url = false
+		//if (token === 'bch') url = 'https://uk.advfn.com/crypto/Bitcoin-Cash-ABC-BCH/fundamentals';
+		//if (token === 'btg') url = 'https://uk.advfn.com/crypto/Bitcoin-Gold-BTG/fundamentals';
+		if (token === 'rvn') url = 'https://uk.advfn.com/crypto/Ravencoin-RVN/fundamentals';
+		if (token === 'mona') url = 'https://uk.advfn.com/crypto/Monacoin-MONA/fundamentals';
+		if (token === 'xzc') url = 'https://uk.advfn.com/crypto/ZCoin-XZC/fundamentals';
+		if (token === 'vtc') url = 'https://uk.advfn.com/crypto/Vertcoin-VTC/fundamentals';
+		if (token === 'emc2') url = 'https://uk.advfn.com/crypto/Einsteinium-EMC2/fundamentals';
+		if (url) {
+			axios.get(url,{ httpsAgent: axiosAgent }).then((response) => {
+				const $ = cheerio.load(response.data);
+				const latestBlock = Number($('.page-fundamentals').html().split('Latest Block:')[1].split('</tr>')[0].split(/[^0-9]/).join(''));
+				resolve(latestBlock);
+			}).catch((error) => {
+				console.log('Axios Error', error);
+				resolve(false);
+			});
+		} else {
+			resolve(false);
+		}
+	});
 };
 
 const getCrypto = async (token) => {
-  let blockTime = 10 * 60 * 1000;
-  let halvingBlock = 630000
-  let name = 'Unknown';
-  if (token === 'bch') name = 'Bitcoin Cash';
-  if (token === 'bsv') name = 'Bitcoin SV';
-  if (token === 'btg') name = 'Bitcoin Gold';
-  if (token === 'zec') {
-    name = 'Zcash';
-    blockTime = 75 * 1000;
-    halvingBlock = 1046400;
-  }
-  if (token === 'rvn') {
-    name = 'Ravencoin';
-    blockTime = 60 * 1000;
-    halvingBlock = 2100000;
-  }
-  if (token === 'mona') {
-    name = 'Monacoin';
-    blockTime = 90 * 1000;
-    halvingBlock = 2102400;
-  }
-  if (token === 'xzc') {
-    name = 'Firo (Zcoin)';
-    blockTime = 600 * 1000;
-    halvingBlock = 305000;
-  }
-  if (token === 'vtc') {
-    name = 'Vertcoin';
-    blockTime = 150 * 1000;
-    halvingBlock = 1680000;
-  }
-  if (token === 'emc2') {
-    name = 'Einsteinium';
-    blockTime = 60 * 1000;
-    halvingBlock = 5256000;
-  }
-  const blockHeight = await getLatestBlock(token);
-  const halvingTime = (halvingBlock - blockHeight) * blockTime;
-  return { name, blockTime, blockHeight, halvingBlock, halvingTime };
+	let blockTime = 10 * 60 * 1000;
+	let halvingBlock = 630000
+	let name = 'Unknown';
+	if (token === 'bch') name = 'Bitcoin Cash';
+	if (token === 'bsv') name = 'Bitcoin SV';
+	if (token === 'btg') name = 'Bitcoin Gold';
+	if (token === 'zec') {
+		name = 'Zcash';
+		blockTime = 75 * 1000;
+		halvingBlock = 1046400;
+	}
+	if (token === 'rvn') {
+		name = 'Ravencoin';
+		blockTime = 60 * 1000;
+		halvingBlock = 2100000;
+	}
+	if (token === 'mona') {
+		name = 'Monacoin';
+		blockTime = 90 * 1000;
+		halvingBlock = 2102400;
+	}
+	if (token === 'xzc') {
+		name = 'Firo (Zcoin)';
+		blockTime = 600 * 1000;
+		halvingBlock = 305000;
+	}
+	if (token === 'vtc') {
+		name = 'Vertcoin';
+		blockTime = 150 * 1000;
+		halvingBlock = 1680000;
+	}
+	if (token === 'emc2') {
+		name = 'Einsteinium';
+		blockTime = 60 * 1000;
+		halvingBlock = 5256000;
+	}
+	const blockHeight = await getLatestBlock(token);
+	if (!blockHeight) return false;
+	const halvingTime = (halvingBlock - blockHeight) * blockTime;
+	return { name, blockTime, blockHeight, halvingBlock, halvingTime };
 }
 
 const getBSV = async () => {
@@ -283,70 +289,43 @@ const getXZC = async () => {
 };
 
 const start = async () => {
-  try {
-    halving.btc = await getBTC();
-  } catch(err) {
-    console.log('Caught error btc',err);
-  }
-  try {
-    halving.ltc = await getLTC();
-  } catch(err) {
-    console.log('Caught error ltc',err);
-  }
-  try {
-    halving.bch = await getBCH();
-  } catch(err) {
-    console.log('Caught error bch',err);
-  }
-  try {
-    halving.zec = await getZEC();
-  } catch(err) {
-    console.log('Caught error zec',err);
-  }
-  try {
-    halving.btg = await getBTG();
-  } catch(err) {
-    console.log('Caught error btg',err);
-  }
-  try {
-    halving.bcd = await getBCD();
-  } catch(err) {
-    console.log('Caught error bcd',err);
-  }
-  try {
-    halving.btm = await getBTM();
-  } catch(err) {
-    console.log('Caught error btm',err);
-  }
-  try {
-    halving.mona = await getMONA();
-  } catch(err) {
-    console.log('Caught error mona',err);
-  }
-  try {
-    halving.xvg = await getXVG();
-  } catch(err) {
-    console.log('Caught error xvg',err);
-  }
-  try {
-    halving.xzc = await getXZC();
-  } catch(err) {
-    console.log('Caught error xzc',err);
-  }
-  try {
-    halving.vtc = await getVTC();
-  } catch(err) {
-    console.log('Caught error vtc',err);
-  }
-  try {
-    halving.emc2 = await getCrypto('emc2');
-  } catch(err) {
-    console.log('Caught err gor',err);
-  }
+	const setHalvingToken = async (token, fn) => {
+		if (typeof fn !== 'function') {
+			console.log(`No fetcher defined for ${token}, keeping previous values`);
+			return;
+		}
+		try {
+			const data = await fn();
+			if (data) {
+				halving[token] = data;
+			} else {
+				console.log(`No data returned for ${token}, keeping previous values`);
+			}
+		} catch(err) {
+			console.log(`Caught error ${token}`, err);
+			console.log(`Keeping previous values for ${token}`);
+		}
+	};
 
-  Object.keys(halving).forEach((token) => {
-    console.log(`${token} - ${Math.round(halving[token].halvingTime/86400000)} days`);
-  });
+	await setHalvingToken('btc', getBTC);
+	await setHalvingToken('ltc', getLTC);
+	await setHalvingToken('bch', getBCH);
+	await setHalvingToken('zec', getZEC);
+	await setHalvingToken('btg', getBTG);
+	await setHalvingToken('btm', getBTM);
+	await setHalvingToken('mona', getMONA);
+	await setHalvingToken('xzc', getXZC);
+	await setHalvingToken('vtc', getVTC);
+	await setHalvingToken('emc2', () => getCrypto('emc2'));
+
+	Object.keys(halving).forEach((token) => {
+		const data = halving[token];
+		if (!data || typeof data.halvingTime !== 'number' || isNaN(data.halvingTime)) {
+			console.log(`${token} - no updated data`);
+			return;
+		}
+		console.log(`${token} - ${Math.round(data.halvingTime/86400000)} days`);
+	});
 
 	const yymmdd = date.toISOString().slice(2,10).replace(/-/g,"");
 	const bkupFile = `./data/halving-${yymmdd}.json`;
